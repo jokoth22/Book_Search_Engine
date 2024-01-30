@@ -1,5 +1,5 @@
 // Important for useQuery: We import the useQuery hook from @apollo/client
-//import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import { useState, useEffect } from 'react';
 import {

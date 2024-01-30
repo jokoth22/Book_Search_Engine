@@ -12,4 +12,15 @@ query GET_ME {
         savedBooks
     }
 }
+
+query GET_ME ($id: ID!) {
+    user (id: $id) {
+        _id
+        username
+        email
+        bookCount
+        savedBooks
+    }
+}
+
 `
