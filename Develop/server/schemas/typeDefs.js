@@ -17,7 +17,7 @@ type Book {
 }
 
 type Auth {
-    token: 
+    token: String
     user: User
 }
 
@@ -34,3 +34,4 @@ type Query {
 }
 
 `
+//TO DO: Auth?

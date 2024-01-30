@@ -1,4 +1,6 @@
 import './App.css';
+// Important for API Consumption: To enable interaction with our GraphQL API on the front end, we utilize these tools to develop the client-side behavior
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Outlet } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
@@ -10,16 +12,13 @@ const client = new ApolloClient({
 });
 
 function App() {
-    // Provide the ApolloClient to all child components
+  return (
+  // Provide the ApolloClient to all child components
     <ApolloProvider client={client}>
-      <div className="flex-column justify-flex-start min-100-vh">
-        <Header />
-        <div className="container">
-          <Outlet />
-        </div>
-        <Footer />
-      </div>
+      <Navbar />
+      <Outlet />
     </ApolloProvider>
+  );
 }
 
 export default App;
