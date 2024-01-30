@@ -4,7 +4,7 @@ type User {
     username: String
     email: String
     bookCount: Int
-    savedBooks: [Book]
+    savedBooks: [Book]!
 }
 
 type Book {
@@ -14,10 +14,6 @@ type Book {
     title: String
     image: String
     link: String   
-}
-
-type Mutation {
-
 }
 
 type Auth {

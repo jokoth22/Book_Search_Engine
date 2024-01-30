@@ -10,6 +10,17 @@ const resolvers = {
           }
     },
     Mutation: {
-
+        login: async (parent, {email, password}) => {
+            return await User.create({email, password});
+        },
+        addUser: async (parent, {username,email, password}) => {
+            return await User.create({username,email, password});
+        },
+        saveBook: async (parent, {author, description, title, bookId, image, link}) => {
+            return await User.create({author, description, title, bookId, image, link});
+        },        
+        removeBook: async (parent, {bookId}) => {
+            return await User.findOneAndDelete({bookId: bookId});
+        },
     },
 };
