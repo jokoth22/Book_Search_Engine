@@ -33,4 +33,6 @@ type Query {
     user (id: ID!): User
 }
 
-`
+
+`;
+module.exports = typeDefs;
