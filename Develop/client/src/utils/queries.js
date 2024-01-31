@@ -3,14 +3,20 @@ import { gql } from '@apollo/client';
 
 //Use the gql function to access the User entry point and export it
 export const GET_ME = gql`
-query GET_ME {
-    me {
-        _id
-        username
-        email
-        bookCount
-        savedBooks
+    query GET_ME {
+        me {
+            _id
+            username
+            email
+            bookCount
+            savedBooks {
+                bookId
+                authors
+                description
+                title
+                image
+                link  
+            }
+        }
     }
-}
-
-`
+`;
