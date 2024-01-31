@@ -13,14 +13,4 @@ query GET_ME {
     }
 }
 
-query GET_ME ($id: ID!) {
-    user (id: $id) {
-        _id
-        username
-        email
-        bookCount
-        savedBooks
-    }
-}
-
 `

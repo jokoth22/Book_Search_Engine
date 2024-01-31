@@ -17,7 +17,7 @@ type Book {
 }
 
 type Auth {
-    token: String
+    token: ID!
     user: User
 }
 
@@ -29,9 +29,8 @@ type Mutation {
 }
 
 type Query {
-    me: [User]
+    me: User
     user (id: ID!): User
 }
 
 `
-//TO DO: Auth?
