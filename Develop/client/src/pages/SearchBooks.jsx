@@ -1,7 +1,5 @@
-// Important for useQuery: We import the useQuery hook from @apollo/client
-import { useQuery } from '@apollo/client';
-
 import { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import {
   Container,
   Col,
@@ -10,9 +8,12 @@ import {
   Card,
   Row
 } from 'react-bootstrap';
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations';
+
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API'; //To Do: useQuery needed
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -23,6 +24,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -37,7 +40,7 @@ const SearchBooks = () => {
     if (!searchInput) {
       return false;
     }
-
+//To Do: useQuery
     try {
       const response = await searchGoogleBooks(searchInput);
 
@@ -62,6 +65,7 @@ const SearchBooks = () => {
     }
   };
 
+
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
@@ -73,14 +77,21 @@ const SearchBooks = () => {
     if (!token) {
       return false;
     }
-
+   
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveBook ({
+        variables: {
+          bookId: bookToSave.bookId,
+          authors: bookToSave.authors,
+          description: bookToSave.description,
+          title: bookToSave.title,
+          image: bookToSave.image,
+          link: bookToSave.link},
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {

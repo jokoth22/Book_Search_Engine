@@ -47,7 +47,6 @@ const resolvers = {
             },
           },
           {
-            new: true,
             runValidators: true,
           }
         );
@@ -64,8 +63,7 @@ const resolvers = {
                 _id: bookId,
               },
             },
-          },
-          { new: true }
+          }
         );
       }
       throw AuthenticationError;
@@ -73,7 +71,6 @@ const resolvers = {
     removeBook: async (parent, {bookId}) => {
         return await User.findOneAndDelete({bookId: bookId});
     },
-    
   },
 };
 
