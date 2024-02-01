@@ -1,8 +1,10 @@
 // see SignupForm.js for comments
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { loginUser } from '../utils/API';
+import { LOGIN_USER } from '../utils/mutations';
+import { QUERY_PROFILES } from '../../utils/queries';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
@@ -14,6 +16,13 @@ const LoginForm = () => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  const [loginUser, { error }] = useMutation (LOGIN_USER, {
+    refetchQueries: [
+      QUERY_PROFILES,
+      'GET_ME'
+    ]
+  });
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
