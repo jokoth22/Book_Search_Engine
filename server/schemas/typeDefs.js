@@ -29,7 +29,7 @@ type Mutation {
 }
 
 type Query {
-    me: User
+    me (id: ID!): User
     user (id: ID!): User
     searchBooks (query: String!): 
 }

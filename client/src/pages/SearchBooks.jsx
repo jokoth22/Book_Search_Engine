@@ -40,7 +40,6 @@ const SearchBooks = () => {
     if (!searchInput) {
       return false;
     }
-//To Do: useQuery
     try {
       const response = await searchGoogleBooks(searchInput);
 
