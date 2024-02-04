@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('saveBooks');
+        return User.findOne({ _id: context.user._id}).populate('saveBooks');
       }
       throw AuthenticationError;
     },
@@ -17,7 +17,7 @@ const resolvers = {
 
   Mutation: {
     login: async (parent, { email, password }) => {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email, password });
   
         if (!user) {
           throw AuthenticationError;
@@ -40,41 +40,30 @@ const resolvers = {
       return { token, user };
     },
     
-    saveBook: async (parent, {author, description, title, bookId, image, link}, context) => {
+    saveBook: async (parent, {BookData}, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id},
-          {
-            $addToSet: {
-              saveBook: {author, description, title, bookId, image, link},
-            },
-          },
-          {
-            runValidators: true,
-          }
+          {$addToSet: {savedBooks: {BookData} }},
+          { new: true, runValidators: true}
         );
+        return updatedUser;
       }
       throw AuthenticationError;
     },      
-    removeBook: async (parent, { bookId}, context) => {
+
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id},
-          {
-            $pull: {
-              saveBook: {
-                _id: bookId,
-              },
-            },
-          }
-        );
+          { $pull: {savedBooks: bookId } },
+          { new: true}
+        )
+        return updatedUser;
       }
       throw AuthenticationError;
-    },      
-    removeBook: async (parent, {bookId}) => {
-        return await User.findOneAndDelete({bookId: bookId});
-    },
-  },
+    }      
+  }
 };
 
 module.exports = resolvers;

@@ -9,7 +9,7 @@ import Navbar from './components/Navbar';
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
-  cache: new InMemoryCache(),
+  //cache: new InMemoryCache(),
 });
 
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header

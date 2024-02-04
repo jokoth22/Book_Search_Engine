@@ -144,8 +144,8 @@ const SearchBooks = () => {
                     <p className='small'>Authors: {book.authors}</p>
                     <Card.Text>{book.description}</Card.Text>
                     {Auth.loggedIn() && (
-                      <Button
-                        disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                     <Button
+                        enabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
                         className='btn-block btn-info'
                         onClick={() => handleSaveBook(book.bookId)}>
                         {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)

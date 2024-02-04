@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -13,7 +14,7 @@ const SignupForm = () => {
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-  const [addUser, {error}] = useMutation (ADD_USER);
+  const [addUser] = useMutation (ADD_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,11 +33,14 @@ const SignupForm = () => {
     }
 
     try {
-      const {response} = await addUser({
+      const {data} = await addUser({
         variables: { ...userFormData },
       });
 
-      Auth.login(response.addUser.token);
+      const { token, user} = data.addUser;
+      console.log (user);
+      Auth.login(token);
+
     } catch (e) {
       console.error(e);
       setShowAlert(true);
@@ -92,12 +96,14 @@ const SignupForm = () => {
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
+        <Link>
         <Button
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>
           Submit
         </Button>
+        </Link>
       </Form>
     </>
   );

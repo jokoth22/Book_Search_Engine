@@ -1,16 +1,15 @@
 // see SignupForm.js for comments
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-
-  const [loginUser, { error }] = useMutation (LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -27,12 +26,20 @@ const LoginForm = () => {
       event.stopPropagation();
     }
 
+    const [loginUser, { error }] = useMutation (LOGIN_USER);
+
     try {
-      const { data } = await loginUser({
+      const { error, data } = await loginUser({
         variables: { ...userFormData },
       });
 
-      Auth.loginUser(data.login.token);
+      if (error) {
+        throw new Error ('GraphQL Error');
+      }
+
+      const {token, user} = data.loginUser;
+      console.log(user);
+      Auth.loginUser(token);
     } catch (e) {
       console.error(e);
       setShowAlert(true);
